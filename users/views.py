@@ -1,5 +1,6 @@
 from django.contrib.auth import login
 from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from django.views import View
@@ -74,3 +75,16 @@ class LoginView(View):
             return redirect('landing_page')
         else:
             return render(request=request, template_name='users/login.html',context= {'form' : login_form})
+
+# class ProfileView(View):
+#     def get(self, request):
+#         user = request.user
+#         if not user.is_authenticated:
+#             return redirect('users:login')
+#
+#         return render(request, 'users/profile.html', {'user': request.user})
+
+
+class ProfileView(LoginRequiredMixin,View):
+    def get(self, request):
+        return render(request, 'users/profile.html', {'user': request.user})
