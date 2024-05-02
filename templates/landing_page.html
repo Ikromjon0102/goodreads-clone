@@ -10,7 +10,8 @@
 <h1>Landing page</h1>
 
 <p>
-    <a href="users/register">Register</a> / <a href="users/login">Login</a>
+    <a href="{% url 'users:register' %}">Register</a> / <a href="{% url 'users:login' %}">Login</a>
+    / <a href="{% url 'books:list' %}">Books</a>
 </p>
 </body>
 </html>
