@@ -9,19 +9,19 @@ class RegistrationTestCase(TestCase):
         self.client.post(
             reverse("users:register"),
             data={
-                "username": "jakhongir",
-                "first_name": "Jakhongir",
-                "last_name": "Rakhmonov",
-                "email": "jrahmonov2@gmail.com",
+                "username": "ikromjon",
+                "first_name": "Ikromjon",
+                "last_name": "Ergashev",
+                "email": "ikromjon2@gmail.com",
                 "password": "somepassword"
             }
         )
 
-        user = User.objects.get(username="jakhongir")
+        user = User.objects.get(username="ikromjon")
 
-        self.assertEqual(user.first_name, "Jakhongir")
-        self.assertEqual(user.last_name, "Rakhmonov")
-        self.assertEqual(user.email, "jrahmonov2@gmail.com")
+        self.assertEqual(user.first_name, "Ikromjon")
+        self.assertEqual(user.last_name, "Ergashev")
+        self.assertEqual(user.email, "ikromjon2@gmail.com")
         self.assertNotEqual(user.password, "somepassword")
         self.assertTrue(user.check_password("somepassword"))
 
@@ -29,8 +29,8 @@ class RegistrationTestCase(TestCase):
         response = self.client.post(
             reverse("users:register"),
             data={
-                "first_name": "Jakhongir",
-                "email": "jrahmonov2@gmail.com"
+                "first_name": "Ikromjon",
+                "email": "ikromjon2@gmail.com"
             }
         )
 
@@ -44,9 +44,9 @@ class RegistrationTestCase(TestCase):
         response = self.client.post(
             reverse("users:register"),
             data={
-                "username": "jakhongir",
-                "first_name": "Jakhongir",
-                "last_name": "Rakhmonov",
+                "username": "ikromjon",
+                "first_name": "Ikromjon",
+                "last_name": "Ergashev",
                 "email": "invalid-email",
                 "password": "somepassword"
             }
@@ -58,17 +58,17 @@ class RegistrationTestCase(TestCase):
         self.assertFormError(response, "form", "email", "Enter a valid email address.")
 
     def test_unique_username(self):
-        user = User.objects.create(username="jakhongir", first_name="Jakhongir")
+        user = User.objects.create(username="ikromjon", first_name="Ikromjon")
         user.set_password("somepass")
         user.save()
 
         response = self.client.post(
             reverse("users:register"),
             data={
-                "username": "jakhongir",
-                "first_name": "Jakhongir",
-                "last_name": "Rakhmonov",
-                "email": "jrahmonov2@gmail.com",
+                "username": "ikromjon",
+                "first_name": "Ikromjon",
+                "last_name": "Ergashev",
+                "email": "ikromjon2@gmail.com",
                 "password": "somepassword"
             }
         )
@@ -80,10 +80,12 @@ class RegistrationTestCase(TestCase):
 
 
 class LoginTestCase(TestCase):
+    # DRY - Don't Repeat Yourself
+    def setUp(self):
+        self.db_user = User.objects.create(username="ikromjon", first_name="Ikromjon")
+        self.db_user.set_password("somepassword")
+        self.db_user.save()
     def test_successful_login(self):
-        db_user = User.objects.create(username="ikromjon", first_name="Ikromjon")
-        db_user.set_password("somepassword")
-        db_user.save()
 
         self.client.post(
             reverse("users:login"),
@@ -98,10 +100,6 @@ class LoginTestCase(TestCase):
         self.assertTrue(user.is_authenticated)
 
     def test_wrong_login(self):
-        db_user = User.objects.create(username="ikromjon", first_name="Ikromjon")
-        db_user.set_password("somepassword")
-        db_user.save()
-
         self.client.post(
             reverse("users:login"),
             data = {
@@ -120,6 +118,13 @@ class LoginTestCase(TestCase):
                 'password': "wrong-password"
             }
         )
+        user = get_user(self.client)
+        self.assertFalse(user.is_authenticated)
+
+    def test_logout(self):
+        self.client.login(username="ikromjon", password="somepassword")
+        self.client.get(reverse("users:logout"))
+
         user = get_user(self.client)
         self.assertFalse(user.is_authenticated)
 
