@@ -1,18 +1,32 @@
 {% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
 {% block title %} Profile page {% endblock %}
 
 
 {% block content %}
 
-    <h1>Profile page</h1>
-    <img class="profile-pic" src="{{ user.profile_picture.url }}" alt="">
-    <div>
-        <a href="{% url 'users:profile-edit' %}">edit profile</a>
-    </div>
-    <p>Username: {{ user.username }}</p>
-    <p>First_name: {{ user.first_name }}</p>
-    <p>Last_name: {{ user.last_name }}</p>
-    <p>Email: {{ user.email }}</p>
+    <div class="container mt-4 mb-4 p-3 d-flex justify-content-center">
+        <div class="card p-4">
+            <div class=" image d-flex flex-column justify-content-center align-items-center">
+                <button class="btn btn-secondary">
 
+                    <img class="profile-pic" src="{{ user.profile_picture.url }}" alt="">
+                </button>
+                <span class="name mt-3">{{ user.first_name }} {{ user.last_name }}</span>
+                <span class="idd">@{{ user.username }}</span>
+                <span class="idd">{{ user.email }}</span>
+
+                <div class=" d-flex mt-2">
+                    <a class="btn btn-dark" href="{% url 'users:profile-edit' %}">Edit profile</a>
+                </div>
+
+                <div class="gap-3 mt-3 icons d-flex flex-row justify-content-center align-items-center"><span><i
+                        class="fa fa-twitter"></i></span> <span><i class="fa fa-facebook-f"></i></span> <span><i
+                        class="fa fa-instagram"></i></span> <span><i class="fa fa-linkedin"></i></span></div>
+                <div class=" px-2 rounded mt-4 date "><span class="join">Joined: {{ user.date_joined|date:"M Y " }}</span></div>
+            </div>
+        </div>
+    </div>
 
 {% endblock %}

@@ -4,4 +4,4 @@ from django.db import models
 
 
 class CustomUser(AbstractUser):
-    profile_picture = models.ImageField(default='default_profile_pictures.png')
+    profile_picture = models.ImageField(default='default_profile_pictures.png', upload_to='profile_pictures')
