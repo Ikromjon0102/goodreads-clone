@@ -1,17 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Profile page</title>
-</head>
-<body>
+{% extends 'base.html' %}
+{% block title %} Profile page {% endblock %}
 
-<h1>Profile page</h1>
 
-<p>Username: {{ user.username }}</p>
-<p>First_name: {{ user.first_name }}</p>
-<p>Last_name: {{ user.last_name }}</p>
-<p>Email: {{ user.email }}</p>
+{% block content %}
 
-</body>
-</html>
+    <h1>Profile page</h1>
+    <img class="profile-pic" src="{{ user.profile_picture.url }}" alt="">
+    <div>
+        <a href="{% url 'users:profile-edit' %}">edit profile</a>
+    </div>
+    <p>Username: {{ user.username }}</p>
+    <p>First_name: {{ user.first_name }}</p>
+    <p>Last_name: {{ user.last_name }}</p>
+    <p>Email: {{ user.email }}</p>
+
+
+{% endblock %}

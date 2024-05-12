@@ -3,13 +3,11 @@ from django.views.generic import View
 
 from books.models import Book
 
-
 class BookListView(View):
     def get(self, request):
         books = Book.objects.all()
         context = {'books': books}
         return render(request, 'books/list.html', context)
-
 
 class BookDetailView(View):
     def get(self, request, book_id):
