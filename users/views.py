@@ -98,6 +98,7 @@ class LogoutView(LoginRequiredMixin, View):
         messages.info(request, 'You have been logged out.')
         return redirect('landing_page')
 
+
 class ProfileUpdateView(LoginRequiredMixin,View):
     def get(self, request):
         form = UserUpdateForm(instance=request.user)

@@ -14,7 +14,11 @@ SECRET_KEY = 'django-insecure-kuj##9s35w-4*to0a64^-ffd5-z%to&44z01_nap+6gwvhf^w(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+NGROK_URL = 'f8f1-213-230-92-75.ngrok-free.app'
+
+ALLOWED_HOSTS = [NGROK_URL, '*']
+
+CSRF_TRUSTED_ORIGINS = [f'https://{NGROK_URL}']
 
 
 # Application definition
@@ -131,3 +135,12 @@ LOGIN_URL = 'users:login'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = '42ikromjon@gmail.com'
+EMAIL_HOST_PASSWORD = 'jvnm ovsg dvbt zfjf'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False

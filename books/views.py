@@ -1,10 +1,14 @@
 from msilib.schema import ListView
 
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.urls import reverse
 from django.views.generic import View
 
-from books.models import Book
+from books.forms import BookReviewForm
+from books.models import Book, BookReview
+
 
 # class BookListView(ListView):
 #     model = Book
@@ -32,9 +36,45 @@ class BookListView(View):
         context = {"page_obj": page_obj,}
         return render(request, 'books/list.html', context)
 
+# class BookDetailView(View):
+#     def get(self, request, book_id):
+#         book = Book.objects.get(pk=book_id)
+#
+#         context = {'book': book}
+#         return render(request, 'books/detail.html', context)
+
 class BookDetailView(View):
     def get(self, request, book_id):
-        book = Book.objects.get(pk=book_id)
+        book = Book.objects.get(id=book_id)
+        review_form = BookReviewForm()
+        context = {
+            "book": book,
+            "review_form": review_form
+        }
+        return render(request, "books/detail.html", context)
 
-        context = {'book': book}
-        return render(request, 'books/detail.html', context)
+class AddReviewView(LoginRequiredMixin, View):
+    def post(self, request, book_id):
+        book = Book.objects.get(id=book_id)
+        review_form = BookReviewForm(data=request.POST)
+
+        if review_form.is_valid():
+            BookReview.objects.create(
+                book=book,
+                user = request.user,
+                stars_given = review_form.cleaned_data['stars_given'],
+                comment=review_form.cleaned_data['comment'],
+            )
+            return redirect(reverse('books:detail', kwargs={'book_id': book.id}))
+
+        context = {
+            "book": book,
+            "review_form": review_form
+        }
+        return render(request, "books/detail.html", context)
+
+class DeleteBookReviewView(View):
+    def get(self, request, book_id, review_id):
+        review = BookReview.objects.filter(id=review_id)
+        review.delete()
+        return redirect(reverse('books:detail', kwargs={'book_id': book_id}))
