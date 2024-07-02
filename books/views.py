@@ -1,8 +1,9 @@
 from msilib.schema import ListView
 
+from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.views.generic import View
 
@@ -73,8 +74,46 @@ class AddReviewView(LoginRequiredMixin, View):
         }
         return render(request, "books/detail.html", context)
 
+class EditReviewView(View):
+    def get(self, request, book_id, review_id):
+        comment = get_object_or_404(BookReview, id=review_id)
+        book = comment.book
+        comments = BookReview.objects.filter(book=book).exclude(id=review_id)
+
+        if comment.user != request.user:
+            messages.error(request, "You do not have permission to edit this review.")
+            return redirect(reverse('books:detail', kwargs={'book_id': book_id}))
+
+        comment_form = BookReviewForm(instance=comment)
+        return render(request, 'books/edit_review.html', {'review_form': comment_form, 'book': book, 'comments': comments})
+
+    def post(self, request, book_id, review_id):
+        comment = get_object_or_404(BookReview, id=review_id)
+
+        # Check if the user is authorized to edit the comment
+        if comment.user != request.user:
+            messages.error(request, "You do not have permission to edit this review.")
+            return redirect(reverse('books:detail', kwargs={'book_id': book_id}))
+
+        comment_form = BookReviewForm(request.POST, instance=comment)
+        if comment_form.is_valid():
+            comment_form.save()
+            messages.success(request, "Review updated successfully.")
+            return redirect(reverse('books:detail', kwargs={'book_id': book_id}))
+        else:
+            messages.error(request, "Please correct the error below.")
+
+        return render(request, 'books/edit_review.html', {'review_form': comment_form})
+
+class ConfirmationDeleteView(View):
+    def get(self, request, book_id, review_id):
+        comment = BookReview.objects.get(id=review_id)
+        book = Book.objects.get(id=book_id)
+
+        return render(request, 'books/del_con.html', {'book': book, 'review': comment})
+
 class DeleteBookReviewView(View):
     def get(self, request, book_id, review_id):
-        review = BookReview.objects.filter(id=review_id)
+        review = BookReview.objects.get(id=review_id)
         review.delete()
         return redirect(reverse('books:detail', kwargs={'book_id': book_id}))

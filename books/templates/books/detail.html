@@ -46,8 +46,8 @@
                 <div class="col-7">
                     <b>{{ review.user.username }}</b> rated it {{ review.stars_given }} stars
                     <span class="fw-lighter">{{ review.created_at }}</span>
-                        | <a href="#">edit</a>
-                        | <a href="{% url 'books:delete_review' book.id review.id %}">delete</a>
+                         <a href="{% url 'books:update_review' book.id review.id %}"><i class="bi bi-pen"></i></a>
+                         <a href="{% url 'books:delete-confirmation-review' book.id review.id %}"><i class="bi bi-trash"></i></a>
                     <p class="mt-2 font-monospace">{{ review.comment }}</p>
                 </div>
             </div>
@@ -64,8 +64,6 @@
                 </div>
             {% endif %}
         {% endfor %}
-
-
     {% endif %}
 
 
