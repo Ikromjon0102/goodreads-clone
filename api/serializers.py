@@ -17,9 +17,11 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class BookReviewDetailSerializer(serializers.ModelSerializer):
-    book = BookSerializer()
-    user = UserSerializer()
+    book = BookSerializer(read_only=True)
+    user = UserSerializer(read_only=True)
+    user_id = serializers.IntegerField(write_only=True)
+    book_id = serializers.IntegerField(write_only=True)
 
     class Meta:
         model = BookReview
-        fields = ['id', 'stars_given', 'comment', 'book', 'user']
+        fields = ['id', 'stars_given', 'comment', 'book', 'user', 'user_id', 'book_id']
