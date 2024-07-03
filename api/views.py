@@ -1,8 +1,7 @@
-from django.http import JsonResponse
-from django.shortcuts import render
-from django.views.generic import View
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework.pagination import PageNumberPagination
 
 from api.serializers import BookReviewDetailSerializer
 from books.models import BookReview
@@ -10,6 +9,7 @@ from books.models import BookReview
 
 
 class BookReviewDetailAPIView(APIView):
+    permission_classes = [IsAuthenticated]
     def get(self, request, id):
         book_review = BookReview.objects.get(id=id)
         serializer = BookReviewDetailSerializer(book_review)
@@ -17,10 +17,18 @@ class BookReviewDetailAPIView(APIView):
 
 
 class BookreviewListAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
     def get(self, request):
-        book_reviews = BookReview.objects.all()
-        serializer = BookReviewDetailSerializer(book_reviews, many=True)
-        return Response(serializer.data)
+        book_reviews = BookReview.objects.all().order_by('-created_at')
+
+        paginator = PageNumberPagination()
+        page_obj = paginator.paginate_queryset(book_reviews, request)
+
+        serializer = BookReviewDetailSerializer(page_obj, many=True)
+
+        # return Response(data=serializer.data)
+        return paginator.get_paginated_response(serializer.data)
 
 
 
