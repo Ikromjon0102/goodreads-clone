@@ -1,37 +1,20 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Register page</title>
-</head>
-<body>
-<h1>Register page</h1>
-<p>
-    <a href="/">Back</a>
-</p>
-<form method="post" action="{% url 'users:register' %}">{% csrf_token %}
-    {{ form.as_p }}
+{% extends 'base.html' %}
+{% block title %} Register page {% endblock %}
 
 
-    <!--    <label for="username">Username: </label>-->
-<!--    <input id ='username' type="text" name="username"> <br> <br>-->
+{% block content %}
+{% load crispy_forms_tags %}
 
-<!--    <label for="first_name">First_name: </label>-->
-<!--    <input id ='first_name' type="text" name="first_name"><br> <br>-->
-
-<!--    <label for="last_name">Last_name</label>-->
-<!--    <input id ='last_name' type="text" name="last_name"><br> <br>-->
-
-<!--    <label for="email">Email: </label>-->
-<!--    <input id ='email' type="email" name="email"><br> <br>-->
-
-<!--    <label for="password">Password: </label>-->
-<!--    <input id ='password' type="password" name="password"><br> <br>-->
-
-    <button type="submit"> Yuborish </button>
-
-</form>
+<h3>Register page</h3>
+<div class="row">
+    <div class="col-4">
+        <form method="post" action="{% url 'users:register' %}">
+            {% csrf_token %}
+            {{ form | crispy }}
+            <button type="submit" class="btn btn-primary"> Yuborish </button>
+        </form>
+    </div>
+</div>
 
 
-</body>
-</html>
+{% endblock %}

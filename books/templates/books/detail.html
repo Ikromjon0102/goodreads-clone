@@ -1,13 +1,130 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Book detail page</title>
-</head>
-<body>
-<h1>Book detail page</h1>
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
 
-<h4>{{ book.title }}</h4>
-<p>{{ book.description }}</p>
-</body>
-</html>
+{% block title %} Book detail page {% endblock %}
+
+
+{% block content %}
+    <div class="row mb-4">
+        <div class="col-2 ">
+            <img class="cover-pic" src="{{ book.cover_picture.url }}" alt="">
+        </div>
+        <div class="col-6 ms-3">
+            <h3>{{ book.title }}</h3>
+            <span class="fst-italic"> Authored by
+                {% for book_author in book.bookauthor_set.all %}
+                    {% if forloop.last %}
+                        {{ book_author.author.full_name }}
+                    {% else %}
+                        {{ book_author.author.full_name }},
+                    {% endif %}
+                {% endfor %}
+            </span>
+            <p>{{ book.description }}</p>
+        </div>
+    </div>
+
+    <div class="row mb-5">
+        <div class="col-6">
+            <form action="{% url 'books:reviews' book.id %}" method="post">
+                {% csrf_token %}
+                {{ review_form | crispy }}
+                <button type="submit" class="btn btn-primary">Add comment</button>
+            </form>
+        </div>
+    </div>
+
+    {% if book.bookreview_set.exists %}
+        <h4>Reviews</h4> <hr>
+        {% for review in book.bookreview_set.all %}
+            {% if review.user == request.user %}
+            <div class="row mb-3">
+                <div class="col-1 me-2">
+                    <img class="small-profile-pic" src="{{ review.user.profile_picture.url }}" alt="bu rasm">
+                </div>
+                <div class="col-7">
+                    <b>{{ review.user.username }}</b> rated it {{ review.stars_given }} stars
+                    <span class="fw-lighter">{{ review.created_at }}</span>
+                         <a href="{% url 'books:update_review' book.id review.id %}"><i class="bi bi-pen"></i></a>
+                         <a href="{% url 'books:delete-confirmation-review' book.id review.id %}"><i class="bi bi-trash"></i></a>
+                    <p class="mt-2 font-monospace">{{ review.comment }}</p>
+                </div>
+            </div>
+            {% else %}
+                <div class="row mb-3">
+                    <div class="col-1 me-2">
+                        <img class="small-profile-pic" src="{{ review.user.profile_picture.url }}" alt="bu rasm">
+                    </div>
+                    <div class="col-7">
+                        <b>{{ review.user.username }}</b> rated it {{ review.stars_given }} stars
+                        <span class="fw-lighter">{{ review.created_at }}</span>
+                        <p class="mt-2 font-monospace">{{ review.comment }}</p>
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+
+
+{% endblock %}
+
+
+
+{##}
+{#<!-- templates/detail.html -->#}
+{#{% extends 'base.html' %}#}
+{#{% load static %}#}
+{#{% load crispy_forms_tags %}#}
+{##}
+{#{% block title %}Book detail page{% endblock %}#}
+{##}
+{#{% block content %}#}
+{#    <div class="row mb-4">#}
+{#        <div class="col-2">#}
+{#            <img class="cover-pic" src="{{ book.cover_picture.url }}" alt="">#}
+{#        </div>#}
+{#        <div class="col-6 ms-3">#}
+{#            <h3>{{ book.title }}</h3>#}
+{#            <p>{{ book.description }}</p>#}
+{#        </div>#}
+{#    </div>#}
+{##}
+{#    <div class="row mb-5">#}
+{#        <div class="col-6">#}
+{#            {% if request.user.is_authenticated %}#}
+{#                <form action="{% url 'books:reviews' book.id %}" method="post">#}
+{#                    {% csrf_token %}#}
+{#                    {{ review_form | crispy }}#}
+{#                    <div class="stars">#}
+{#                        <span class="star" data-value="1">☆</span>#}
+{#                        <span class="star" data-value="2">☆</span>#}
+{#                        <span class="star" data-value="3">☆</span>#}
+{#                        <span class="star" data-value="4">☆</span>#}
+{#                        <span class="star" data-value="5">☆</span>#}
+{#                    </div>#}
+{#                    <button type="submit" class="btn btn-primary mt-2">Add comment</button>#}
+{#                </form>#}
+{#            {% else %}#}
+{#                <h5 class="mt-5">Izoh qoldirish uchun <a href="{% url 'users:login' %}">kiring</a> yoki <a href="{% url 'users:register' %}">ro'yxatdan o'ting</a></h5>#}
+{#            {% endif %}#}
+{#        </div>#}
+{#    </div>#}
+{##}
+{#    {% if book.bookreview_set.exists %}#}
+{#        <h4>Reviews</h4>#}
+{#        <hr>#}
+{#        {% for review in book.bookreview_set.all %}#}
+{#            <div class="row mb-3">#}
+{#                <div class="col-1 me-2">#}
+{#                    <img class="small-profile-pic" src="{{ review.user.profile_picture.url }}" alt="profile picture">#}
+{#                </div>#}
+{#                <div class="col-7">#}
+{#                    <b>{{ review.user.username }}</b> rated it {{ review.stars_given }} stars#}
+{#                    <span class="fw-lighter">{{ review.created_at }}</span>#}
+{#                    <p class="mt-2 font-monospace">{{ review.comment }}</p>#}
+{#                </div>#}
+{#            </div>#}
+{#        {% endfor %}#}
+{#    {% endif %}#}
+{#{% endblock %}#}

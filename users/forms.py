@@ -1,5 +1,5 @@
 from django import forms
-from django.contrib.auth.models import User
+from users.models import CustomUser
 
 
 # class UserCreateForm(forms.Form):
@@ -16,7 +16,7 @@ from django.contrib.auth.models import User
 #         email = self.cleaned_data['email']
 #         password = self.cleaned_data['password']
 #
-#         user = User.objects.create(
+#         user = CustomUser.objects.create(
 #             username=username,
 #             first_name=firstname,
 #             last_name=lastname,
@@ -30,7 +30,7 @@ from django.contrib.auth.models import User
 
 class UserCreateForm(forms.ModelForm):
     class Meta:
-        model = User
+        model = CustomUser
         fields = ('username','email','first_name','last_name', 'password')
 
     def save(self, commit=True):
@@ -38,14 +38,21 @@ class UserCreateForm(forms.ModelForm):
         user.set_password(self.cleaned_data['password'])
         user.save()
 
+
         return user
 
+class UserUpdateForm(forms.ModelForm):
+    class Meta:
+        model = CustomUser
+        fields = ('username', 'first_name', 'last_name', 'email', 'profile_picture')
 
 
-class UserLoginForm(forms.Form):
-    username = forms.CharField(max_length=150)
-    password = forms.CharField(max_length=128)
 
-    # def clean(self):
+
+# class UserLoginForm(forms.Form):
+#     username = forms.CharField(max_length=150)
+#     password = forms.CharField(max_length=128)
+#
+#     # def clean(self):
     #     username = self.cleaned_data.get('username')
     #     password = self.cleaned_data.get('password')

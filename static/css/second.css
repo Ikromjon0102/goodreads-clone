@@ -1,0 +1,25 @@
+/* static/styles.css */
+body {
+    font-family: Arial, sans-serif;
+}
+
+.review-container {
+    text-align: center;
+    margin-top: 50px;
+}
+
+.stars {
+    display: inline-block;
+}
+
+.star {
+    font-size: 2em;
+    cursor: pointer;
+    color: #ccc;
+}
+
+.star.selected,
+.star:hover,
+.star:hover ~ .star {
+    color: gold;
+}
