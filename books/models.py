@@ -22,6 +22,7 @@ class Author(models.Model):
     last_name = models.CharField(max_length=100)
     email = models.EmailField()
     bio = models.TextField()
+    image = models.ImageField(upload_to='author_images', default='author_images/default.png')
 
     def __str__(self):
         return f'{self.first_name} {self.last_name}'
@@ -29,8 +30,8 @@ class Author(models.Model):
         return f'{self.first_name} {self.last_name}'
 
 class BookAuthor(models.Model):
-    book = models.ForeignKey(Book, on_delete=models.CASCADE)
-    author = models.ForeignKey(Author, on_delete=models.CASCADE)
+    book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name='book_authors')
+    author = models.ForeignKey(Author, on_delete=models.CASCADE, related_name='author_books')
 
     def __str__(self):
         return f'{self.author} - {self.book}'
@@ -46,3 +47,5 @@ class BookReview(models.Model):
 
     def __str__(self):
         return f'{self.stars_given} for {self.book} by {self.user}'
+
+

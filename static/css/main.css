@@ -8,6 +8,16 @@ body, html {
     border-radius: 50%;
 }
 
+.author-pic {
+    width: 160px;
+    height: 240px;
+}
+
+.author-book-pic {
+    width: 60px;
+    height: 90px;
+}
+
 .small-profile-pic {
     width: 100px;
     height: 100px;
@@ -15,7 +25,7 @@ body, html {
 }
 
 .cover-pic {
-    width: 220px;
+    width: 200px;
     height: 300px;
 }
 

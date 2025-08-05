@@ -1,0 +1,58 @@
+.authorName {
+    font-family: "Merriweather", "Georgia", serif;
+    /*font-optical-sizing: auto;*/
+    font-size: 20px;
+    font-weight: 900;
+    font-style: normal;
+    color : #333333
+}
+
+.dataTitle {
+    color: black;
+    font-weight: bold;
+    width: 50%;
+    float: left;
+    margin: 1px;
+    font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    line-height: 18px;
+}
+
+.dataItem {
+    float: left;
+    width: 75%;
+    margin: 1px
+}
+
+.logoStyle {
+    display: inline-block;
+    height: 30px;
+    order: initial;
+    /*background: url(/assets/layout/header/goodreads_logo.svg) no-repeat;*/
+    /*background-position: center;*/
+    background-size: 140px 30px;
+    margin: 0 16px 0 15px;
+    width: 140px;
+
+}
+
+.searchW{
+    width: 600px;
+}
+
+.authorFont {
+    font-family: Copernicus, Libre Baskerville, Georgia, serif;
+    font-size: 1.5rem;
+    line-height: 2.4rem;
+    font-weight: 300;
+}
+
+
+.textTitle {
+    font-family: Copernicus, Libre Baskerville, Georgia, serif;
+    font-weight: 500;
+    font-size: 40px;
+
+
+    /*border-radius: 3px;*/
+    /*box-shadow: 0 0 0 2px*/
+}

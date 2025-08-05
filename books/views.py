@@ -8,7 +8,7 @@ from django.urls import reverse
 from django.views.generic import View
 
 from books.forms import BookReviewForm
-from books.models import Book, BookReview
+from books.models import Book, BookReview, Author
 
 
 # class BookListView(ListView):
@@ -117,3 +117,16 @@ class DeleteBookReviewView(View):
         review = BookReview.objects.get(id=review_id)
         review.delete()
         return redirect(reverse('books:detail', kwargs={'book_id': book_id}))
+
+class AuthorView(View):
+
+    def get(self, request, author_id):
+        author = Author.objects.get(id=author_id)
+
+        context = {
+            'author': author,
+
+        }
+
+        return render(request, 'author/author.html', context)
+

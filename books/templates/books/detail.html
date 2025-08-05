@@ -11,13 +11,13 @@
             <img class="cover-pic" src="{{ book.cover_picture.url }}" alt="">
         </div>
         <div class="col-6 ms-3">
-            <h3>{{ book.title }}</h3>
-            <span class="fst-italic"> Authored by
-                {% for book_author in book.bookauthor_set.all %}
+            <h1 class="textTitle">{{ book.title }}</h1>
+            <span class="authorFont"> Authored by
+                {% for book_author in book.book_authors.all %}
                     {% if forloop.last %}
-                        {{ book_author.author.full_name }}
+                        <a  style="text-decoration: none; color: black" href="{% url 'books:author' book_author.author.id %}">{{ book_author.author.full_name }}</a>
                     {% else %}
-                        {{ book_author.author.full_name }},
+                        <a style="text-decoration: none; color: black" href="{% url 'books:author' book_author.author.id %}">{{ book_author.author.full_name }},</a>
                     {% endif %}
                 {% endfor %}
             </span>

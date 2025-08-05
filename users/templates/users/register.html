@@ -5,9 +5,14 @@
 {% block content %}
 {% load crispy_forms_tags %}
 
-<h3>Register page</h3>
-<div class="row">
+
+<div class="row mt-4">
+    <div class="col-7">
+        <img style="width:700px" src="https://static.vecteezy.com/system/resources/previews/003/689/228/non_2x/online-registration-or-sign-up-login-for-account-on-smartphone-app-user-interface-with-secure-password-mobile-application-for-ui-web-banner-access-cartoon-people-illustration-vector.jpg"
+             alt="">
+    </div>
     <div class="col-4">
+        <h3>Register page</h3>
         <form method="post" action="{% url 'users:register' %}">
             {% csrf_token %}
             {{ form | crispy }}

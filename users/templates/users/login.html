@@ -5,17 +5,20 @@
 
 
 {% block content %}
-
-    <h3>Login page</h3>
-    <div class="row">
+    <div class="row mt-4">
+        <div class="col-7">
+            <img style="width:700px" src="https://static.vecteezy.com/system/resources/previews/003/689/228/non_2x/online-registration-or-sign-up-login-for-account-on-smartphone-app-user-interface-with-secure-password-mobile-application-for-ui-web-banner-access-cartoon-people-illustration-vector.jpg"
+                 alt="">
+        </div>
         <div class="col-4">
-            <form action="" method="post">
-                {% csrf_token %}
-                {{ form | crispy }}
-                <button type="submit" class="btn btn-primary">Log in</button>
-                <span class="ms-4">
-                    No account? <a href="{% url 'users:register' %}">get register now</a>
-                </span>
+        <h1>Login page</h1>
+        <form action="" method="post">
+            {% csrf_token %}
+            {{ form|crispy }}
+            <button type="submit" class="btn btn-primary">Log in</button>
+            <span class="ms-4">
+                No account? <a href="{% url 'users:register' %}">get register now</a>
+            </span>
             </form>
         </div>
     </div>
